@@ -1,6 +1,9 @@
 <?php
 
+ini_set( 'default_charset', 'UTF-8' );
 // VARIABLES - might be moved to iso19139.module?
+
+$deimsURL = $GLOBALS['base_url'];
 
 $node = menu_get_object();
 
@@ -25,6 +28,8 @@ $minimumSapplingUnit = $node ->field_minimum_sampling_unit['und'];
 $legalAct = field_get_items('node', $node, 'field_dataset_legal');
 
 $relatedSite = field_get_items('node', $node, 'field_dataset_site_name_ref');
+
+$dataSource = $node ->field_data_sources['und'];
 
 ?>
 
@@ -100,7 +105,7 @@ $relatedSite = field_get_items('node', $node, 'field_dataset_site_name_ref');
       <gmd:MD_DataIdentification>
          <gmd:citation>
             <gmd:CI_Citation>
-               <gmd:title><gco:CharacterString><?php /*print utf8_decode($label)*/ print ($label); ?></gco:CharacterString></gmd:title>
+               <gmd:title><gco:CharacterString><?php /*print utf8_decode($label)*/ print (utf8_decode($label)); ?></gco:CharacterString></gmd:title>
                <gmd:date>
                  <gmd:CI_Date>
                    <gmd:date>
@@ -119,17 +124,26 @@ $relatedSite = field_get_items('node', $node, 'field_dataset_site_name_ref');
                  </gmd:CI_Date>
                </gmd:date>
 			   <gmd:identifier>
+			   <?php if (empty($content['field_dataset_site_name_ref'])): ?>
+					<gmd:MD_Identifier>
+					  <gmd:code>
+						<gco:CharacterString>urn:ltereurope:inspire:<?php print ((render ($content['field_data_set_id'])) . ":". $node->nid . ":" . $node->vid) ?></gco:CharacterString>
+					  </gmd:code>
+					</gmd:MD_Identifier>
+				<?php endif; ?>
+				<?php if (!empty($content['field_dataset_site_name_ref'])): ?>
 					<gmd:RS_Identifier>
 					  <gmd:code>
 						<gco:CharacterString>urn:ltereurope:inspire:<?php print ((render ($content['field_data_set_id'])) . ":". $node->nid . ":" . $node->vid) ?></gco:CharacterString>
 					  </gmd:code>
+					</gmd:MD_Identifier>
 					  <gmd:codeSpace>
-						<gco:CharacterString><?php print (render($content['field_dataset_site_name_ref'])) ?></gco:CharacterString>
+						<gco:CharacterString><?php print utf8_decode(render($content['field_dataset_site_name_ref'])) ?></gco:CharacterString>
 						</gmd:codeSpace>
 					</gmd:RS_Identifier>
 			   </gmd:identifier>
-
-			   
+				<?php endif; ?>
+				
                <?php print render($content['field_person_creator']); ?>
 			   
 			   
@@ -142,7 +156,7 @@ $relatedSite = field_get_items('node', $node, 'field_dataset_site_name_ref');
 		 
 		 <?php if (!empty($content['field_abstract'])): ?>
           <gmd:abstract>
-            <?php print render($content['field_abstract']); ?>
+            <?php print utf8_decode (render($content['field_abstract'])); ?>
           </gmd:abstract>
          <?php endif; ?>
          
@@ -336,9 +350,7 @@ $relatedSite = field_get_items('node', $node, 'field_dataset_site_name_ref');
    <?php if (!empty($content['field_online_locator']) || !empty($content['field_data_sources'])): ?>
    <gmd:distributionInfo>
    <gmd:MD_Distribution>
-   
-   <?php print render($content['field_data_sources']); ?>
-   
+	<?php print render($content['field_data_sources']); ?>
    <?php if (!empty($content['field_online_locator'])): ?>
    <?php foreach ($onlineLocator as $item): ?>
       <gmd:transferOptions>
@@ -350,7 +362,7 @@ $relatedSite = field_get_items('node', $node, 'field_dataset_site_name_ref');
                    </gmd:linkage>
 				   <?php if (!empty($item[field_distribution_url][und][0][title])): ?>
 				   <gmd:name>
-					<gco:CharacterString><?php print $item[field_distribution_url][und][0][title] ?></gco:CharacterString>
+					<gco:CharacterString><?php print utf8_decode($item[field_distribution_url][und][0][title]) ?></gco:CharacterString>
 				   </gmd:name>
 				   <?php endif; ?>
 				   <gmd:function>
