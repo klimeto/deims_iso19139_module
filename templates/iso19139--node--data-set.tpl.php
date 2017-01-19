@@ -7,53 +7,29 @@ $deimsURL = $GLOBALS['base_url'];
 
 $node = menu_get_object();
 
-if ($content['field_publication_date']){
-	$fieldPubDate = date_format(date_create(render($content['field_publication_date'])),"Y-m-d");
-}
+$fieldPubDate = date_format(date_create(render($content['field_publication_date'])),"Y-m-d");
 
-if (field_get_items('node', $node, 'field_online_locator')){
-	$onlineLocator = field_get_items('node', $node, 'field_online_locator');
-}
+$onlineLocator = field_get_items('node', $node, 'field_online_locator');
 
-if (field_get_items($onlineLocator[0]['field_distribution_function']['und'][0]['value']){
-	$distributionURL = $onlineLocator[0]['field_distribution_url']['und'][0]['value'];
-}
-	
-if (field_get_items($onlineLocator[0]['field_distribution_function']['und'][0]['value']){
-	$distributionFunction = $onlineLocator[0]['field_distribution_function']['und'][0]['value'];
-}
+$distributionURL = $onlineLocator[0]['field_distribution_url']['und'][0]['value'];
 
-if (field_get_items('node', $node, 'field_language')){
-	$resourceLanguage = field_get_items('node', $node, 'field_language');
-}
+$distributionFunction = $onlineLocator[0]['field_distribution_function']['und'][0]['value'];
 
-if (field_access_use_termref['und']){
-	$accessUse = $node ->field_access_use_termref['und'];//[0]['taxonomy_term'];
-}
+$resourceLanguage = field_get_items('node', $node, 'field_language');
 
-if (field_spatial_scale['und']){
-	$spatialScale = $node ->field_spatial_scale['und'];
-}
-	
-if (field_sampling_time_span['und']){
-	$samplingTimeSpan = $node ->field_sampling_time_span['und'];
-}
+$accessUse = $node ->field_access_use_termref['und'];//[0]['taxonomy_term'];
 
-if (field_minimum_sampling_unit['und']){
-	$minimumSapplingUnit = $node ->field_minimum_sampling_unit['und'];
-}
+$spatialScale = $node ->field_spatial_scale['und'];
 
-if (field_get_items('node', $node, 'field_dataset_legal')){
-	$legalAct = field_get_items('node', $node, 'field_dataset_legal');
-}
+$samplingTimeSpan = $node ->field_sampling_time_span['und'];
 
-if (field_get_items('node', $node, 'field_dataset_site_name_ref')){
-	$relatedSite = field_get_items('node', $node, 'field_dataset_site_name_ref');
-}
+$minimumSapplingUnit = $node ->field_minimum_sampling_unit['und'];
 
-if (field_data_sources['und']){
-	$dataSource = $node ->field_data_sources['und'];									
-}
+$legalAct = field_get_items('node', $node, 'field_dataset_legal');
+
+$relatedSite = field_get_items('node', $node, 'field_dataset_site_name_ref');
+
+$dataSource = $node ->field_data_sources['und'];
 
 ?>
 
