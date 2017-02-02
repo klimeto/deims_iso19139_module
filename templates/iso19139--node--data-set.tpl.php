@@ -295,7 +295,7 @@ $dataSource = $node ->field_data_sources['und'];
 		 
 		 <?php foreach($resourceLanguage as $item): ?>
 		 <gmd:language>
-			<gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/ " codeListValue="<?php print $item[value]; ?>"><?php print $item[value]; ?></gmd:LanguageCode>
+			<gmd:LanguageCode codeList="http://www.loc.gov/standards/iso639-2/ " codeListValue="<?php print $item['value']; ?>"><?php print $item['value']; ?></gmd:LanguageCode>
 		 </gmd:language>
 		 <?php endforeach; ?>
 		 
