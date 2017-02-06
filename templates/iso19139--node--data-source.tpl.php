@@ -16,8 +16,16 @@ $deimsURL = $GLOBALS['base_url'];
 		   <?php 
 			$fileURL = pathinfo(render($content['field_data_source_file']));
 
-			$extension = $fileURL['extension'];
-			$fileName = $fileURL['filename'];
+			$extension = '';
+			$filename = '';
+			if (isset($fileURL['extension'])) {
+				$extension = $fileURL['extension'];
+			}
+			
+			if (isset($fileURL['extension'])) {
+				$fileName = $fileURL['filename'];
+			}
+
 			if ($extension == 'xlsx'){
 				$excelType = 'Microsoft Excel Open XML Document';
 				$excelVersion = 'Excel 2007 and later';
