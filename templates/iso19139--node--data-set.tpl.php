@@ -33,7 +33,8 @@ $dataSource = $node ->field_data_sources['und'];
 
 ?>
 
-<?php //echo '<?xml version="1.0" encoding="UTF-8" ?>' ?>
+<?php echo '<?xml version="1.0" encoding="UTF-8" ?>' ?>
+
 
 <gmd:MD_Metadata <?php print $namespaces; ?> >
     <gmd:fileIdentifier>
@@ -105,7 +106,7 @@ $dataSource = $node ->field_data_sources['und'];
       <gmd:MD_DataIdentification>
          <gmd:citation>
             <gmd:CI_Citation>
-               <gmd:title><gco:CharacterString><?php /*print utf8_decode($label)*/ print (utf8_decode($label)); ?></gco:CharacterString></gmd:title>
+               <gmd:title><gco:CharacterString><?php /*print utf8_decode($label)*/ print ($label); ?></gco:CharacterString></gmd:title>
                <gmd:date>
                  <gmd:CI_Date>
                    <gmd:date>
@@ -138,7 +139,7 @@ $dataSource = $node ->field_data_sources['und'];
 					  </gmd:code>
 					</gmd:MD_Identifier>
 					  <gmd:codeSpace>
-						<gco:CharacterString><?php print utf8_decode(render($content['field_dataset_site_name_ref'])) ?></gco:CharacterString>
+						<gco:CharacterString><?php print render($content['field_dataset_site_name_ref']) ?></gco:CharacterString>
 						</gmd:codeSpace>
 					</gmd:RS_Identifier>
 			   </gmd:identifier>
@@ -156,7 +157,7 @@ $dataSource = $node ->field_data_sources['und'];
 		 
 		 <?php if (!empty($content['field_abstract'])): ?>
           <gmd:abstract>
-            <?php print utf8_decode (render($content['field_abstract'])); ?>
+            <?php print render($content['field_abstract']); ?>
           </gmd:abstract>
          <?php endif; ?>
          
@@ -357,17 +358,279 @@ $dataSource = $node ->field_data_sources['und'];
           <gmd:MD_DigitalTransferOptions>
              <gmd:onLine>
                 <gmd:CI_OnlineResource>
-                   <gmd:linkage>
-                      <gmd:URL><?php print $item[field_distribution_url][und][0][value] ?></gmd:URL>
-                   </gmd:linkage>
-				   <?php if (!empty($item[field_distribution_url][und][0][title])): ?>
-				   <gmd:name>
-					<gco:CharacterString><?php print utf8_decode($item[field_distribution_url][und][0][title]) ?></gco:CharacterString>
-				   </gmd:name>
-				   <?php endif; ?>
-				   <gmd:function>
-					<gmd:CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue="<?php print $item[field_distribution_function][und][0][value] ?>"/>
+                    <gmd:linkage>
+						<gmd:URL><?php print $item[field_distribution_url][und][0][value] ?></gmd:URL>
+					</gmd:linkage>
+					<?php if (!empty($item[field_distribution_url][und][0][title])): ?>
+					<gmd:name>
+					<gco:CharacterString><?php print $item[field_distribution_url][und][0][title] ?></gco:CharacterString>
+					</gmd:name>
+					<?php endif; ?>
+					<?php if (!empty($item[field_distribution_function][und][0][value])): ?>
+					<gmd:protocol>
+						<gco:CharacterString><?php switch ($item[field_distribution_function][und][0][value]) {
+							case "arcims_mscf":
+								echo "ESRI:AIMS--http--configuration";
+								break;
+							case "arcims_ifms":
+								echo "ESRI:AIMS--http-get-feature";
+								break;
+							case "arcims_ims":
+								echo "ESRI:AIMS--http-get-image";
+								break;
+							case "google_kml":
+								echo "GLG:KML-2.0-http-get-map";
+								break;
+							case "ogc_csw":
+								echo "OGC:CSW";
+								break;
+							case "ogc_kml":
+								echo "OGC:KML";
+								break;
+							case "ogc_gml|":
+								echo "OGC:GML";
+								break;
+							case "ogc_ods":
+								echo "OGC:ODS";
+								break;
+							case "ogc_ods_ogs":
+								echo "OGC:OGS";
+								break;
+							case "ogc_ods_ous":
+								echo "OGC:OUS";
+								break;
+							case "ogc_ods_ops":
+								echo "OGC:OPS";
+								break;
+							case "ogc_ods_ors":
+								echo "OGC:ORS";
+								break;
+							case "ogc_sos":
+								echo "OGC:SOS";
+								break;
+							case "ogc_sps":
+								echo "OGC:SPS";
+								break;
+							case "ogc_sas":
+								echo "OGC:SAS";
+								break;
+							case "ogc_wcs":
+								echo "OGC:WCS";
+								break;
+							case "ogc_wcs_1_1_0":
+								echo "OGC:WCS-1.1.0-http-get-capabilities";
+								break;
+							case "ogc_wcts":
+								echo "OGC:WCTS";
+								break;
+							case "ogc_wfs":
+								echo "OGC:WFS";
+								break;
+							case "ogc_wfs_g":
+								echo "OGC:WFS-G";
+								break;
+							case "ogc_wmc":
+								echo "OGC:WMC";
+								break;
+							case "ogc_wms":
+								echo "OGC:WMS";
+								break;
+							case "ogc_wms_cap_1_1_1":
+								echo "OGC:WMS-1.1.1-http-get-capabilities";
+								break;
+							case "ogc_wms_cap_1_3_0":
+								echo "OGC:WMS-1.3.0-http-get-capabilities";
+								break;
+							case "ogc_wms_1_1_1":
+								echo "OGC:WMS-1.1.1-http-get-map";
+								break;
+							case "ogc_wms_1_3_0":
+								echo "OGC:WMS-1.3.0-http-get-map";
+								break;
+							case "ogc_sos_get_1_0_0":
+								echo "OGC:SOS-1.0.0-http-get-observation";
+								break;
+							case "ogc_sos_get_post_1_0_0":
+								echo "OGC:SOS-1.0.0-http-post-observation";
+								break;
+							case "ogc_wns":
+								echo "OGC:WNS";
+								break;
+							case "ogc_wps":
+								echo "OGC:WPS";
+								break;
+							case "ogc_ows":
+								echo "OGC:OWS-C";
+								break;
+							case "file_ftp":
+								echo "WWW:DOWNLOAD-1.0-ftp--download";
+								break;
+							case "file_download":
+								echo "WWW:DOWNLOAD-1.0-http--download";
+								break;
+							case "file_gis":
+								echo "FILE:GEO";
+								break;
+							case "file_raster":
+								echo "FILE:RASTER";
+								break;
+							case "rss":
+								echo "WWW:LINK-1.0-http--rss";
+								break;
+							case "postgis":
+								echo "DB:POSTGIS";
+								break;
+							case "oracle":
+								echo "DB:ORACLE";
+								break;
+							case "opendap":
+								echo "WWW:LINK-1.0-http--opendap";
+								break;
+							case "dataturbine":
+								echo "RBNB:DATATURBINE";
+								break;
+							case "email":
+								echo "UKST";
+								break;
+							case "unknown":
+								echo "UKST";
+								break;				
+						}?></gco:CharacterString>
+					</gmd:protocol>
+					<?php endif; ?>
+					<?php if (!empty($item[field_distribution_function][und][0][value])): ?>
+					<gmd:function>
+					<gmd:CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue=" <?php  
+						switch ($item[field_distribution_function][und][0][value]) {
+							case "arcims_mscf":
+								echo "information";
+								break;
+							case "arcims_ifms":
+								echo "download";
+								break;
+							case "arcims_ims":
+								echo "browseGraphic";
+								break;
+							case "google_kml":
+								echo "download";
+								break;
+							case "ogc_csw":
+								echo "search";
+								break;
+							case "ogc_kml":
+								echo "download";
+								break;
+							case "ogc_gml|":
+								echo "download";
+								break;
+							case "ogc_ods":
+								echo "search";
+								break;
+							case "ogc_ods_ogs":
+								echo "information";
+								break;
+							case "ogc_ods_ous":
+								echo "information";
+								break;
+							case "ogc_ods_ops":
+								echo "information";
+								break;
+							case "ogc_ods_ors":
+								echo "information";
+								break;
+							case "ogc_sos":
+								echo "download";
+								break;
+							case "ogc_sps":
+								echo "information";
+								break;
+							case "ogc_sas":
+								echo "download";
+								break;
+							case "ogc_wcs":
+								echo "download";
+								break;
+							case "ogc_wcs_1_1_0":
+								echo "download";
+								break;
+							case "ogc_wcts":
+								echo "information";
+								break;
+							case "ogc_wfs":
+								echo "download";
+								break;
+							case "ogc_wfs_g":
+								echo "download";
+								break;
+							case "ogc_wmc":
+								echo "information";
+								break;
+							case "ogc_wms":
+								echo "information";
+								break;
+							case "ogc_wms_cap_1_1_1":
+								echo "completeMetadata";
+								break;
+							case "ogc_wms_cap_1_3_0":
+								echo "completeMetadata";
+								break;
+							case "ogc_wms_1_1_1":
+								echo "completeMetadata";
+								break;
+							case "ogc_wms_1_3_0":
+								echo "completeMetadata";
+								break;
+							case "ogc_sos_get_1_0_0":
+								echo "download";
+								break;
+							case "ogc_sos_get_post_1_0_0":
+								echo "download";
+								break;
+							case "ogc_wns":
+								echo "information";
+								break;
+							case "ogc_wps":
+								echo "information";
+								break;
+							case "ogc_ows":
+								echo "information";
+								break;
+							case "file_ftp":
+								echo "download";
+								break;
+							case "file_download":
+								echo "download";
+								break;
+							case "file_gis":
+								echo "download";
+								break;
+							case "file_raster":
+								echo "download";
+								break;
+							case "rss":
+								echo "information";
+								break;
+							case "postgis":
+								echo "download";
+								break;
+							case "oracle":
+								echo "download";
+								break;
+							case "opendap":
+								echo "information";
+								break;
+							case "dataturbine":
+								echo "download";
+								break;
+							case "email":
+								echo "emailService";
+								break;
+							case "unknown":
+								echo "_unknown";
+								break;				
+						}?>"/>
 				   </gmd:function>
+				   <?php endif;?>
                 </gmd:CI_OnlineResource>
              </gmd:onLine>
            </gmd:MD_DigitalTransferOptions>
