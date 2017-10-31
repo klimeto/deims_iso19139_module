@@ -12,7 +12,6 @@
 		}
 		else {
 			print '<gmd:organisationName><gco:CharacterString>LTER Europe</gco:CharacterString></gmd:organisationName>';
-			
 		}
 ?>
 
