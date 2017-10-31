@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ini_set( 'default_charset', 'UTF-8' );
 // VARIABLES - might be moved to iso19139.module?
@@ -489,6 +489,9 @@ $dataSource = $node ->field_data_sources['und'];
 							case "dataturbine":
 								echo "RBNB:DATATURBINE";
 								break;
+							case "url":
+								echo "WWW:LINK-1.0-http--link";
+								break;
 							case "email":
 								echo "UKST";
 								break;
@@ -624,6 +627,9 @@ $dataSource = $node ->field_data_sources['und'];
 								break;
 							case "email":
 								echo "emailService";
+								break;
+							case "url":
+								echo "information";
 								break;
 							case "unknown":
 								echo "_unknown";
