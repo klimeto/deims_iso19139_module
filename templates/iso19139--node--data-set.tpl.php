@@ -729,7 +729,7 @@ if ($node ->field_data_sources) {
 											</gmd:date>
 											<gmd:dateType>
 												<gmd:CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml"
-																	 codeListValue="<?php print $legalActArray[2]; print_r ($legalActArray)?>"
+																	 codeListValue="<?php print $legalActArray[2];?>"
 																	 codeSpace="ISOTC211/19115"><?php print $legalActArray[2]; ?></gmd:CI_DateTypeCode>
 											</gmd:dateType>
 										</gmd:CI_Date>
