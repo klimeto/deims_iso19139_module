@@ -243,15 +243,11 @@ function template_preprocess_iso19139(&$variables, $hook) {
   );
 
 
-  if ($entity_type == 'node' && $variables['elements']['#bundle'] == 'data_set') {
+  if ($entity_type == 'node' && $variables['elements']['#bundle'] == 'data_set') { 
     $variables['pubDate'] = format_date($entity->created, 'iso19139_yeardate');
+	//$variables['date'] = format_date($entity->field_date, 'iso19139_yeardate');
   }
-  
-  if ($entity_type == 'node' && $variables['elements']['#bundle'] == 'data_set') {
-    $variables['date'] = format_date($entity->field_date, 'iso19139_yeardate');
-  }
-  
-  
+   
 
   // Helpful $content variable for templates.
   $variables += array('content' => array());
@@ -266,6 +262,7 @@ function template_preprocess_iso19139(&$variables, $hook) {
 
   // Ensure that all the fields for this entity are available, even if empty.
   foreach (field_info_instances($entity_type, $bundle) as $instance) {
+	  
     if (!isset($variables['content'][$instance['field_name']])) {
       $variables['content'][$instance['field_name']] = '';
     }
