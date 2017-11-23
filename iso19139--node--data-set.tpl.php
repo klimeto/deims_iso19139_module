@@ -728,7 +728,7 @@ if ($node ->field_data_sources) {
 											<gmd:date>
 												<gco:Date><?php
 													if (array_key_exists(1,$legalActArray)) {
-																				print $legalActArray[1];
+														print $legalActArray[1];
 													}
 													else {
 														print "2000-01-01";
@@ -754,7 +754,7 @@ if ($node ->field_data_sources) {
 																				print "publication";
 																			} 
 																		?>
-																	</gmd:CI_DateTypeCode>
+												</gmd:CI_DateTypeCode>
 											</gmd:dateType>
 										</gmd:CI_Date>
 									</gmd:date>
