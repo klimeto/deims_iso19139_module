@@ -17,20 +17,27 @@ $distributionFunction = $onlineLocator[0]['field_distribution_function']['und'][
 
 $resourceLanguage = field_get_items('node', $node, 'field_language');
 
-$accessUse = $node ->field_access_use_termref['und'];//[0]['taxonomy_term'];
+if ($node ->field_access_use_termref) {
+	$accessUse = $node ->field_access_use_termref['und'];//[0]['taxonomy_term'];
+}
 
-$spatialScale = $node ->field_spatial_scale['und'];
+if ($node ->field_spatial_scale) {
+	$spatialScale = $node ->field_spatial_scale['und'];
+}
 
 $samplingTimeSpan = $node ->field_sampling_time_span['und'];
 
-$minimumSapplingUnit = $node ->field_minimum_sampling_unit['und'];
+if ($node ->field_minimum_sampling_unit) {
+	$minimumSapplingUnit = $node ->field_minimum_sampling_unit['und'];
+}
 
 $legalAct = field_get_items('node', $node, 'field_dataset_legal');
 
 $relatedSite = field_get_items('node', $node, 'field_dataset_site_name_ref');
 
-$dataSource = $node ->field_data_sources['und'];
-
+if ($node ->field_data_sources) {
+	$dataSource = $node ->field_data_sources['und'];
+}
 ?>
 
 <?php echo '<?xml version="1.0" encoding="UTF-8" ?>' ?>
@@ -104,7 +111,7 @@ $dataSource = $node ->field_data_sources['und'];
       <gmd:MD_DataIdentification>
          <gmd:citation>
             <gmd:CI_Citation>
-               <gmd:title><gco:CharacterString><?php /*print utf8_decode($label)*/ print ($label); ?></gco:CharacterString></gmd:title>
+               <gmd:title><gco:CharacterString><?php print ($label); ?></gco:CharacterString></gmd:title>
                <gmd:date>
                  <gmd:CI_Date>
                    <gmd:date>
@@ -189,16 +196,19 @@ $dataSource = $node ->field_data_sources['und'];
                    <gmd:MD_MaintenanceFrequencyCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_MaintenanceFrequencyCode" codeListValue="continual" >continual</gmd:MD_MaintenanceFrequencyCode>
                 </gmd:maintenanceAndUpdateFrequency>
                 <gmd:maintenanceNote>
-                   <?php 
+                   <?php
+						$minimumSapplingUnitText = "";
+						$spatialScaleText = "";
+						$samplingTimeSpanText = "";
 						if (!empty($content['field_spatial_scale'])){
-						$spatialScaleText = ('Representative area of sampling: '. $spatialScale[0]['taxonomy_term'] -> name);
+							$spatialScaleText = ('Representative area of sampling: '. $spatialScale[0]['taxonomy_term'] -> name);
 						}
 						if (!empty($content['field_sampling_time_span'])){
-						$samplingTimeSpanText = ('Sampling frequency - sampling time span: '. $samplingTimeSpan[0]['taxonomy_term'] -> name);
+							$samplingTimeSpanText = ('Sampling frequency - sampling time span: '. $samplingTimeSpan[0]['taxonomy_term'] -> name);
 						}
 						if (!empty($content['field_minimum_sampling_unit'])){
-						$minimumSapplingUnitText = ('Sampling frequency - minimmum sampling unit: '. $minimumSapplingUnit[0]['taxonomy_term'] -> name);
-						}						
+							$minimumSapplingUnitText = ('Sampling frequency - minimmum sampling unit: '. $minimumSapplingUnit[0]['taxonomy_term'] -> name);
+						}
 					?>
 					<gco:CharacterString><?php print $spatialScaleText. ' '.$samplingTimeSpanText. ' '.$minimumSapplingUnitText ?></gco:CharacterString>
                 </gmd:maintenanceNote>
@@ -357,11 +367,11 @@ $dataSource = $node ->field_data_sources['und'];
 						<gmd:onLine>
 							<gmd:CI_OnlineResource>
 								<gmd:linkage>
-									<gmd:URL><?php print $item[field_distribution_url][und][0][value] ?></gmd:URL>
+									<gmd:URL><?php print $item["field_distribution_url"]["und"][0]["value"] ?></gmd:URL>
 								</gmd:linkage>
-								<?php if (!empty($item[field_distribution_function][und][0][value])): ?>
+								<?php if (!empty($item["field_distribution_function"]["und"][0]["value"])): ?>
 								<gmd:protocol>
-									<gco:CharacterString><?php switch ($item[field_distribution_function][und][0][value]) {
+									<gco:CharacterString><?php switch ($item["field_distribution_function"]["und"][0]["value"]) {
 										case "arcims_mscf":
 											echo "ESRI:AIMS--http--configuration";
 											break;
@@ -495,14 +505,14 @@ $dataSource = $node ->field_data_sources['und'];
 								</gmd:protocol>
 								<?php endif; ?>
 								
-								<?php if (!empty($item[field_distribution_url][und][0][title])): ?>
-									<gmd:name><gco:CharacterString><?php print $item[field_distribution_url][und][0][title] ?></gco:CharacterString></gmd:name>
+								<?php if (!empty($item["field_distribution_url"]["und"][0]["title"])): ?>
+									<gmd:name><gco:CharacterString><?php print $item["field_distribution_url"]["und"][0]["title"] ?></gco:CharacterString></gmd:name>
 								<?php endif; ?>
 								
-								<?php if (!empty($item[field_distribution_function][und][0][value])): ?>
+								<?php if (!empty($item["field_distribution_function"]["und"][0]["value"])): ?>
 								<gmd:function>
 									<gmd:CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue=" <?php  
-										switch ($item[field_distribution_function][und][0][value]) {
+										switch ($item["field_distribution_function"]["und"][0]["value"]) {
 											case "arcims_mscf":
 												echo "information";
 												break;
@@ -695,46 +705,46 @@ $dataSource = $node ->field_data_sources['und'];
             </gmd:DQ_DomainConsistency>
          </gmd:report>
 		 
-		 <?php if(!empty($content['field_dataset_legal'])):?>
-		 <?php foreach ($legalAct as $item): ?>
-		 <gmd:report>
-            <gmd:DQ_DomainConsistency>
-               <gmd:result>
-                  <gmd:DQ_ConformanceResult>
-                     <gmd:specification>
-                        <gmd:CI_Citation>
-                           <gmd:title>
-                              <gco:CharacterString>
-								<?php
-									$legalActTextFull = $item['value'];
-									$legalActArray = explode(';', $legalActTextFull);
-									print $legalActArray[0];
-								?>
-							   </gco:CharacterString>
-                           </gmd:title>
-                           <gmd:date>
-                              <gmd:CI_Date>
-                                 <gmd:date>
-                                    <gco:Date><?php print $legalActArray[1];?></gco:Date>
-                                 </gmd:date>
-                                 <gmd:dateType>
-                                    <gmd:CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml"
-                                                         codeListValue="<?php print $legalActArray[2];?>"
-                                                         codeSpace="ISOTC211/19115"><?php print $legalActArray[2];?></gmd:CI_DateTypeCode>
-                                 </gmd:dateType>
-                              </gmd:CI_Date>
-                           </gmd:date>
-                        </gmd:CI_Citation>
-                     </gmd:specification>
-                     <gmd:explanation>
-                        <gco:CharacterString>See the referenced specification</gco:CharacterString>
-                     </gmd:explanation>
-                     <gmd:pass gco:nilReason="unknown"/>
-                  </gmd:DQ_ConformanceResult>
-               </gmd:result>
-            </gmd:DQ_DomainConsistency>
-         </gmd:report>
-		 <?php endforeach; ?>	 
+		<?php if(!empty($content['field_dataset_legal'])):?>
+			<?php foreach ($legalAct as $item): ?>
+			<gmd:report>
+				<gmd:DQ_DomainConsistency>
+					<gmd:result>
+						<gmd:DQ_ConformanceResult>
+							<gmd:specification>
+								<gmd:CI_Citation>
+									<gmd:title>
+										<gco:CharacterString>
+										<?php
+											$legalActTextFull = $item['value'];
+											$legalActArray = explode(';', $legalActTextFull);
+											print $legalActArray[0];
+										?>
+									   </gco:CharacterString>
+									</gmd:title>
+									<gmd:date>
+										<gmd:CI_Date>
+											<gmd:date>
+												<gco:Date><?php print $legalActArray[1];?></gco:Date>
+											</gmd:date>
+											<gmd:dateType>
+												<gmd:CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml"
+																	 codeListValue="<?php print $legalActArray[2]; print_r ($legalActArray)?>"
+																	 codeSpace="ISOTC211/19115"><?php print $legalActArray[2]; ?></gmd:CI_DateTypeCode>
+											</gmd:dateType>
+										</gmd:CI_Date>
+									</gmd:date>
+								</gmd:CI_Citation>
+							</gmd:specification>
+							<gmd:explanation>
+								<gco:CharacterString>See the referenced specification</gco:CharacterString>
+							</gmd:explanation>
+							<gmd:pass gco:nilReason="unknown"/>
+						</gmd:DQ_ConformanceResult>
+					</gmd:result>
+				</gmd:DQ_DomainConsistency>
+			</gmd:report>
+			<?php endforeach; ?>	 
 		 <?php endif; ?>
 		
         <gmd:lineage>
