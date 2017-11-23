@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ini_set( 'default_charset', 'UTF-8' );
 // VARIABLES - might be moved to iso19139.module?
@@ -706,7 +706,7 @@ if ($node ->field_data_sources) {
          </gmd:report>
 		 
 		<?php if(!empty($content['field_dataset_legal'])):?>
-			<?php $count = 1; foreach ($legalAct as $item): ?>
+			<?php foreach ($legalAct as $item): ?>
 			<gmd:report>
 				<gmd:DQ_DomainConsistency>
 					<gmd:result>
