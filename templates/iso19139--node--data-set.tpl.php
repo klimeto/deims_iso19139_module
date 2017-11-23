@@ -717,6 +717,7 @@ if ($node ->field_data_sources) {
 										<gco:CharacterString>
 										<?php
 											$legalActTextFull = $item['value'];
+											$legalActArray = [];
 											$legalActArray = explode(';', $legalActTextFull);
 											print $legalActArray[0];
 										?>
@@ -725,12 +726,13 @@ if ($node ->field_data_sources) {
 									<gmd:date>
 										<gmd:CI_Date>
 											<gmd:date>
-												<gco:Date><?php print $legalActArray[1];?></gco:Date>
+												<gco:Date><?php	echo (array_key_exists(1,$legalActArray)) ? $legalActArray[1] : "2000-01-01"; ?></gco:Date>
 											</gmd:date>
 											<gmd:dateType>
 												<gmd:CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml"
-																	 codeListValue="<?php print $legalActArray[2];?>"
-																	 codeSpace="ISOTC211/19115"><?php print $legalActArray[2]; ?></gmd:CI_DateTypeCode>
+																	 codeListValue="<?php echo (array_key_exists(2,$legalActArray)) ? $legalActArray[2] : "publication"; ?>"
+																	 codeSpace="ISOTC211/19115">
+												</gmd:CI_DateTypeCode>
 											</gmd:dateType>
 										</gmd:CI_Date>
 									</gmd:date>
