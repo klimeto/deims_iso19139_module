@@ -11,8 +11,12 @@ $fieldPubDate = date_format(date_create(render($content['field_publication_date'
 
 $onlineLocator = field_get_items('node', $node, 'field_online_locator');
 
-$distributionURL = $onlineLocator[0]['field_distribution_url']['und'][0]['value'];
-
+if (isset($onlineLocator[0]['field_distribution_url']['und'][0]['value'])) {
+	$distributionURL = $onlineLocator[0]['field_distribution_url']['und'][0]['value'];
+}
+else {
+	$distributionURL = "";
+}
 $distributionFunction = $onlineLocator[0]['field_distribution_function']['und'][0]['value'];
 
 $resourceLanguage = field_get_items('node', $node, 'field_language');
@@ -367,7 +371,10 @@ if ($node ->field_data_sources) {
 						<gmd:onLine>
 							<gmd:CI_OnlineResource>
 								<gmd:linkage>
-									<gmd:URL><?php print $item["field_distribution_url"]["und"][0]["value"] ?></gmd:URL>
+									<gmd:URL>
+									<?php //print $item["field_distribution_url"]["und"][0]["value"] 
+									echo (isset($item["field_distribution_url"]["und"][0]["value"])) ? $item["field_distribution_url"]["und"][0]["value"] : "";
+									?></gmd:URL>
 								</gmd:linkage>
 								<?php if (!empty($item["field_distribution_function"]["und"][0]["value"])): ?>
 								<gmd:protocol>
