@@ -17,6 +17,9 @@ if ($node ->field_access_use_termref) {
 	$accessUse = $node ->field_access_use_termref['und'];//[0]['taxonomy_term'];
 }
 
+if ($node ->field_sampling_time_span['und']) {
+	$samplingTimeSpan = $node ->field_sampling_time_span['und'];
+}
 if ($node ->field_spatial_scale) {
 	$spatialScale = $node ->field_spatial_scale['und'];
 }
