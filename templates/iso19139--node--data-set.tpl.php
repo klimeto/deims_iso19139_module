@@ -11,10 +11,6 @@ $fieldPubDate = date_format(date_create(render($content['field_publication_date'
 
 $onlineLocator = field_get_items('node', $node, 'field_online_locator');
 
-$distributionURL = $onlineLocator[0]['field_distribution_url']['und'][0]['value'];
-
-$distributionFunction = $onlineLocator[0]['field_distribution_function']['und'][0]['value'];
-
 $resourceLanguage = field_get_items('node', $node, 'field_language');
 
 if ($node ->field_access_use_termref) {
@@ -24,8 +20,6 @@ if ($node ->field_access_use_termref) {
 if ($node ->field_spatial_scale) {
 	$spatialScale = $node ->field_spatial_scale['und'];
 }
-
-$samplingTimeSpan = $node ->field_sampling_time_span['und'];
 
 if ($node ->field_minimum_sampling_unit) {
 	$minimumSapplingUnit = $node ->field_minimum_sampling_unit['und'];
@@ -279,24 +273,23 @@ if ($node ->field_data_sources) {
 			<?php print render($content['field_dataset_rights']);?>
                
                <?php if (!empty ($content['field_access_use_termref'])): ?>
-			   <gmd:accessConstraints>
-                  <gmd:MD_RestrictionCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml"
-                                          codeListValue="otherRestrictions"
-                                          codeSpace="ISOTC211/19115"/>
-               </gmd:accessConstraints>
-			   <?php foreach ($accessUse as $item): ?>
-			   <gmd:otherConstraints>
-                  <gco:CharacterString>
-				  
-				  <?php $term = ($item['taxonomy_term'] -> name);
-						$parent = taxonomy_get_parents(($item['taxonomy_term'] -> tid));
-						$parentName = reset ($parent) -> name;
-						$accessUseText = ('The principal: '.$parentName.' has granted the access and use permission: '.$term);
-						print $accessUseText;
-				  ?>
-				  </gco:CharacterString>
-               </gmd:otherConstraints>
-			   <?php endforeach;?>
+					<gmd:accessConstraints>
+						<gmd:MD_RestrictionCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml"
+											  codeListValue="otherRestrictions"
+											  codeSpace="ISOTC211/19115"/>
+					</gmd:accessConstraints>
+					<?php foreach ($accessUse as $item): ?>
+						<gmd:otherConstraints>
+							<gco:CharacterString>
+								<?php 	$term = ($item['taxonomy_term'] -> name);
+										$parent = taxonomy_get_parents(($item['taxonomy_term'] -> tid));
+										$parentName = reset ($parent) -> name;
+										$accessUseText = ('The principal: '.$parentName.' has granted the access and use permission: '.$term);
+										print $accessUseText;
+								?>
+							</gco:CharacterString>
+						</gmd:otherConstraints>
+				   <?php endforeach;?>
 			   <?php endif; ?>
             </gmd:MD_LegalConstraints>
          </gmd:resourceConstraints>
@@ -367,7 +360,10 @@ if ($node ->field_data_sources) {
 						<gmd:onLine>
 							<gmd:CI_OnlineResource>
 								<gmd:linkage>
-									<gmd:URL><?php print $item["field_distribution_url"]["und"][0]["value"] ?></gmd:URL>
+									<gmd:URL>
+									<?php //print $item["field_distribution_url"]["und"][0]["value"] 
+									echo (isset($item["field_distribution_url"]["und"][0]["value"])) ? $item["field_distribution_url"]["und"][0]["value"] : "";
+									?></gmd:URL>
 								</gmd:linkage>
 								<?php if (!empty($item["field_distribution_function"]["und"][0]["value"])): ?>
 								<gmd:protocol>
@@ -732,6 +728,7 @@ if ($node ->field_data_sources) {
 												<gmd:CI_DateTypeCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml"
 																	 codeListValue="<?php echo (array_key_exists(2,$legalActArray)) ? $legalActArray[2] : "publication"; ?>"
 																	 codeSpace="ISOTC211/19115">
+																	 <?php echo (array_key_exists(2,$legalActArray)) ? $legalActArray[2] : "publication"; ?>
 												</gmd:CI_DateTypeCode>
 											</gmd:dateType>
 										</gmd:CI_Date>
