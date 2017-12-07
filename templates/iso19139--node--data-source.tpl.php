@@ -18,9 +18,9 @@ $deimsURL = $GLOBALS['base_url'];
 				
 				$start_pos = strpos($temp_source_url, '<a href="') + 9;
 				$correct_start = substr($temp_source_url, $start_pos);
-				$end_pos = (strpos($correct_start, '"') * -1) -1;
 				
-				$corr_url = substr($correct_start, 0, $end_pos);
+				$end_pos = strpos($correct_start, '" ');
+				$corr_url = mb_substr($correct_start, 0, $end_pos);
 				
 			}
 			// this section can be removed if the drupal bug is fixed
