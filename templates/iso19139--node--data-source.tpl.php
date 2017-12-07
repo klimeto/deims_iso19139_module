@@ -9,13 +9,22 @@ $deimsURL = $GLOBALS['base_url'];
 
 <?php if (!empty($content['field_data_source_file'])): ?>
 
-      <!--
-	  <gmd:distributionFormat>
-         <gmd:MD_Format>
-           <gmd:name>
 		   <?php 
 			$fileURL = pathinfo(render($content['field_data_source_file']));
-
+			$temp_source_url = render($content['field_data_source_file']);
+			
+			// drupal formatter isn't printing the pure url to the export, therefore this bit is needed to extract the url value
+			if (strpos($temp_source_url, '<a href="') !== false) {
+				
+				$start_pos = strpos($temp_source_url, '<a href="') + 9;
+				$correct_start = substr($temp_source_url, $start_pos);
+				$end_pos = (strpos($correct_start, '"') * -1) -1;
+				
+				$corr_url = substr($correct_start, 0, $end_pos);
+				
+			}
+			// this section can be removed if the drupal bug is fixed
+			
 			$extension = '';
 			$filename = '';
 			if (isset($fileURL['extension'])) {
@@ -25,7 +34,7 @@ $deimsURL = $GLOBALS['base_url'];
 			if (isset($fileURL['extension'])) {
 				$fileName = $fileURL['filename'];
 			}
-
+			
 			if ($extension == 'xlsx'){
 				$excelType = 'Microsoft Excel Open XML Document';
 				$excelVersion = 'Excel 2007 and later';
@@ -39,18 +48,13 @@ $deimsURL = $GLOBALS['base_url'];
 				$excelVersion = "N/A";
 			}
 		   ?>
-             <gco:CharacterString><?php print($excelType); ?></gco:CharacterString>
-           </gmd:name>
-           <gmd:version><gco:CharacterString><?php print($excelVersion) ?></gco:CharacterString></gmd:version>
-         </gmd:MD_Format>
-      </gmd:distributionFormat>
-	  -->
+    
 		  <gmd:transferOptions>
 			  <gmd:MD_DigitalTransferOptions>
 				 <gmd:onLine>
 					<gmd:CI_OnlineResource>
 					   <gmd:linkage>
-						  <gmd:URL><?php print render($content['field_data_source_file']); ?></gmd:URL>
+						  <gmd:URL><?php echo ($corr_url); ?></gmd:URL>
 					   </gmd:linkage>
 					   <gmd:name>
 						<gco:CharacterString><?php print $entity->title ?></gco:CharacterString>
@@ -86,8 +90,4 @@ $deimsURL = $GLOBALS['base_url'];
 					 </gmd:onLine>
 				   </gmd:MD_DigitalTransferOptions>
 			  </gmd:transferOptions>
-
-
-
-
 <?php endif; ?>
