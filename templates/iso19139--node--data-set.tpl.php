@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 ini_set( 'default_charset', 'UTF-8' );
 // VARIABLES - might be moved to iso19139.module?
@@ -17,7 +17,7 @@ if ($node ->field_access_use_termref) {
 	$accessUse = $node ->field_access_use_termref['und'];//[0]['taxonomy_term'];
 }
 
-if ($node ->field_sampling_time_span['und']) {
+if ($node ->field_sampling_time_span) {
 	$samplingTimeSpan = $node ->field_sampling_time_span['und'];
 }
 if ($node ->field_spatial_scale) {
