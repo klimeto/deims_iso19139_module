@@ -35,6 +35,11 @@ $relatedSite = field_get_items('node', $node, 'field_dataset_site_name_ref');
 if ($node ->field_data_sources) {
 	$dataSource = $node ->field_data_sources['und'];
 }
+
+if ($node ->field_doi) {
+	$dataset_doi = render($content['field_doi']);
+}
+
 ?>
 
 <?php echo '<?xml version="1.0" encoding="UTF-8" ?>' ?>
@@ -352,10 +357,34 @@ if ($node ->field_data_sources) {
    </gmd:identificationInfo>
 
    
-	<?php if (!empty($content['field_online_locator']) || !empty($content['field_data_sources'])): ?>
+	<?php if (!empty($content['field_online_locator']) || !empty($content['field_data_sources']) || isset($dataset_doi)): ?>
 	<gmd:distributionInfo>
 		<gmd:MD_Distribution>
 		<?php print render($content['field_data_sources']); ?>
+		<?php if (isset($dataset_doi)): ?>
+			<gmd:transferOptions>
+				<gmd:MD_DigitalTransferOptions>
+					<gmd:onLine>
+						<gmd:CI_OnlineResource>
+							<gmd:linkage>
+								<gmd:URL>
+									<?php echo $dataset_doi; ?>
+								</gmd:URL>
+							</gmd:linkage>
+							<gmd:protocol>
+								<gco:CharacterString>WWW:LINK-1.0-http--link</gco:CharacterString>
+							</gmd:protocol>
+							<gmd:name>
+								<gco:CharacterString>DOI</gco:CharacterString>
+							</gmd:name>
+							<gmd:function>
+								<gmd:CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue="information"/>
+							</gmd:function>
+						</gmd:CI_OnlineResource>
+					</gmd:onLine>
+				</gmd:MD_DigitalTransferOptions>
+			</gmd:transferOptions>
+		<?php endif; ?>
 		<?php if (!empty($content['field_online_locator'])): ?>
 			<?php foreach ($onlineLocator as $item): ?>
 				<gmd:transferOptions>
@@ -510,7 +539,7 @@ if ($node ->field_data_sources) {
 								
 								<?php if (!empty($item["field_distribution_function"]["und"][0]["value"])): ?>
 								<gmd:function>
-									<gmd:CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue=" <?php  
+									<gmd:CI_OnLineFunctionCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#CI_OnLineFunctionCode" codeListValue="<?php  
 										switch ($item["field_distribution_function"]["und"][0]["value"]) {
 											case "arcims_mscf":
 												echo "information";
