@@ -24,8 +24,7 @@ function iso19139_output_node($node) {
     // Get the ISO 19139 as a string and output it.
     $dataset = new Iso19139DataSet($node);
     $iso19139 = $dataset->getISO19139();
-    //drupal_add_http_header('Content-Type', 'application/xml; charset=utf-8');
-	drupal_add_http_header('Content-Type', 'application/xml');
+    drupal_add_http_header('Content-Type', 'application/xml; charset=utf-8');
     print $iso19139;
   }
   catch (Exception $exception) {

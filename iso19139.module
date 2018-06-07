@@ -243,9 +243,12 @@ function template_preprocess_iso19139(&$variables, $hook) {
   );
 
 
-  if ($entity_type == 'node' && $variables['elements']['#bundle'] == 'data_set') { 
+  if ($entity_type == 'node' && $variables['elements']['#bundle'] == 'data_set') {
+	  
     $variables['pubDate'] = format_date($entity->created, 'iso19139_yeardate');
+
 	//$variables['date'] = format_date($entity->field_date, 'iso19139_yeardate');
+	
   }
    
 

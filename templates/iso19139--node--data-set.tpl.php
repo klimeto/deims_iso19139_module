@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 ini_set( 'default_charset', 'UTF-8' );
 // VARIABLES - might be moved to iso19139.module?
@@ -39,6 +39,8 @@ if ($node ->field_data_sources) {
 if ($node ->field_doi) {
 	$dataset_doi = render($content['field_doi']);
 }
+
+$inspire_data_theme = render($content['field_inspire_data_theme']);
 
 ?>
 
@@ -187,9 +189,7 @@ if ($node ->field_doi) {
            <gmd:MD_ProgressCode codeList="http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_ProgressCode" codeListValue="completed" codeSpace="001">completed</gmd:MD_ProgressCode>
          </gmd:status>    
          
-         
-		 <?php print render($content['field_person_contact']); ?>
-
+		 <?php print render($content['field_person_contact']);?>
          
 		 <?php if (!empty($content['field_spatial_scale']) || !empty($content['field_sampling_time_span']) || !empty($content['field_minimum_sampling_unit'])): ?>
           <gmd:resourceMaintenance>
@@ -209,7 +209,7 @@ if ($node ->field_doi) {
 							$samplingTimeSpanText = ('Sampling frequency - sampling time span: '. $samplingTimeSpan[0]['taxonomy_term'] -> name);
 						}
 						if (!empty($content['field_minimum_sampling_unit'])){
-							$minimumSapplingUnitText = ('Sampling frequency - minimmum sampling unit: '. $minimumSapplingUnit[0]['taxonomy_term'] -> name);
+							$minimumSapplingUnitText = ('Sampling frequency - minimum sampling unit: '. $minimumSapplingUnit[0]['taxonomy_term'] -> name);
 						}
 					?>
 					<gco:CharacterString><?php print $spatialScaleText. ' '.$samplingTimeSpanText. ' '.$minimumSapplingUnitText ?></gco:CharacterString>
@@ -221,26 +221,24 @@ if ($node ->field_doi) {
 		
 		<gmd:descriptiveKeywords>
 			<gmd:MD_Keywords>
-					<gmd:keyword>
-						<gco:CharacterString>Environmental monitoring facilities</gco:CharacterString>
-					</gmd:keyword>
-					<gmd:thesaurusName>
-						<gmd:CI_Citation>
-							<gmd:title>
-								<gco:CharacterString>GEMET - INSPIRE themes, version 1.0</gco:CharacterString>
-							</gmd:title>
-							<gmd:date>
-								<gmd:CI_Date>
-									<gmd:date>
-										<gco:Date>2008-06-01</gco:Date>
-									</gmd:date>
-									<gmd:dateType>
-										<gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</gmd:CI_DateTypeCode>
-									</gmd:dateType>
-								</gmd:CI_Date>
-							</gmd:date>
-						</gmd:CI_Citation>
-					</gmd:thesaurusName>
+				<?php echo $inspire_data_theme; ?>
+				<gmd:thesaurusName>
+					<gmd:CI_Citation>
+						<gmd:title>
+							<gmx:Anchor xlink:href="http://www.eionet.europa.eu/gemet/inspire_themes">GEMET - INSPIRE themes, version 1.0</gmx:Anchor>
+						</gmd:title>
+						<gmd:date>
+							<gmd:CI_Date>
+								<gmd:date>
+									<gco:Date>2008-06-01</gco:Date>
+								</gmd:date>
+								<gmd:dateType>
+									<gmd:CI_DateTypeCode codeList="http://standards.iso.org/ittf/PubliclyAvailableStandards/ISO_19139_Schemas/resources/Codelist/ML_gmxCodelists.xml#CI_DateTypeCode" codeListValue="publication">publication</gmd:CI_DateTypeCode>
+								</gmd:dateType>
+							</gmd:CI_Date>
+						</gmd:date>
+					</gmd:CI_Citation>
+				</gmd:thesaurusName>
 			</gmd:MD_Keywords>
 		</gmd:descriptiveKeywords>
 		
@@ -393,7 +391,7 @@ if ($node ->field_doi) {
 							<gmd:CI_OnlineResource>
 								<gmd:linkage>
 									<gmd:URL>
-									<?php //print $item["field_distribution_url"]["und"][0]["value"] 
+									<?php  
 									echo (isset($item["field_distribution_url"]["und"][0]["value"])) ? $item["field_distribution_url"]["und"][0]["value"] : "";
 									?></gmd:URL>
 								</gmd:linkage>

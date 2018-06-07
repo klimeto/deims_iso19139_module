@@ -74,7 +74,6 @@ class Iso19139DataSet {
       );
       $tidy = new tidy();
       return $tidy->repairString($xml, $config);
-	  echo "<script type='text/javascript'>alert('USING TIDY');</script>";
     }
     else {
       // If the Tidy library isn't found, then we can pretty much duplicate
@@ -92,7 +91,6 @@ class Iso19139DataSet {
       }
       $dom->formatOutput = TRUE;
       return $dom->saveXML($dom->documentElement, LIBXML_NOEMPTYTAG);
-	  echo "<script type='text/javascript'>alert('USING PHP DOM');</script>";
     }
   }
 

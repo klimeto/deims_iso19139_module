@@ -69,6 +69,15 @@ function iso19139_field_formatter_info() {
     'field types' => array('text', 'text_long', 'text_with_summary'),
   );
   
+  $info['iso19139_inspire_data_theme'] = array(
+    'label' => t('iso19139 inspire data theme'),
+    'field types' => array('taxonomy_term_reference'),
+    'settings' => array(
+      'keyword_value' => '[term:name]',
+      'thesaurus_value' => '[term:vocabulary]',
+    ),
+  );
+  
     // KLIMETO
   $info['iso19139_text_ipr'] = array(
     'label' => t('ISO 19139 text ipr'),
@@ -206,7 +215,33 @@ function iso19139_field_formatter_view($entity_type, $entity, $field, $instance,
         );
       }
       break;
-
+	  
+	case 'iso19139_inspire_data_theme':
+		
+		foreach ($items as $delta => $item) {
+			$current_value = taxonomy_term_load($item["tid"]);
+			$title = $current_value->name;
+			$field_term_url = $current_value->field_uri;
+			$term_url = $field_term_url["und"][0]["value"];
+			
+			$element[$delta] = array(
+				'#theme' => 'iso19139_elements',
+				'#iso19139' => array(
+					"gmd:keyword" => array("gmx:Anchor xlink:href='$term_url'" => $title,),
+				),
+			);		
+		}
+		if (empty($element[$delta])) {
+			$element[$delta] = array(
+				'#theme' => 'iso19139_elements',
+				'#iso19139' => array(
+					"gmd:keyword" => array("gmx:Anchor xlink:href='http://inspire.ec.europa.eu/theme/ef'" => "Environmental monitoring facilities",),
+				),
+			);	
+		}
+	  
+      break; 
+	  
     case 'entityreference_iso19139_element':
       $ids = array();
       foreach ($items as $item) {
@@ -326,7 +361,7 @@ function iso19139_field_formatter_view($entity_type, $entity, $field, $instance,
           '#iso19139' => array(
             'gmd:westBoundLongitude' => array('gco:Decimal' => $item['right']),
             'gmd:eastBoundLongitude' => array('gco:Decimal' => $item['left']),
-            'gmd:southBoundLatitude' => array('gco:Decimal' =>  $item['bottom']),
+            'gmd:southBoundLatitude' => array('gco:Decimal' => $item['bottom']),
             'gmd:northBoundLatitude' => array('gco:Decimal' => $item['top']),
           ),
         );
@@ -365,7 +400,7 @@ function iso19139_field_formatter_view($entity_type, $entity, $field, $instance,
           ),
         );
       }*/
-	  case 'iso19139_onlineUrl':
+	case 'iso19139_onlineUrl':
       foreach ($items as $delta => $item) {
         $element[$delta] = array(
           '#theme' => 'iso19139_elements',
