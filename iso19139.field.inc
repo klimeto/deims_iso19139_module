@@ -231,8 +231,9 @@ function iso19139_field_formatter_view($entity_type, $entity, $field, $instance,
 				),
 			);		
 		}
-		if (empty($element[$delta])) {
-			$element[$delta] = array(
+		
+		if (!isset($current_value)) {
+			$element = array(
 				'#theme' => 'iso19139_elements',
 				'#iso19139' => array(
 					"gmd:keyword" => array("gmx:Anchor xlink:href='http://inspire.ec.europa.eu/theme/ef'" => "Environmental monitoring facilities",),
